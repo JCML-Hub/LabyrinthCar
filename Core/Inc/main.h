@@ -57,6 +57,18 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define Left_Pin GPIO_PIN_4
+#define Left_GPIO_Port GPIOC
+#define Left_EXTI_IRQn EXTI4_IRQn
+#define Back_Pin GPIO_PIN_0
+#define Back_GPIO_Port GPIOB
+#define Back_EXTI_IRQn EXTI0_IRQn
+#define Right_Pin GPIO_PIN_2
+#define Right_GPIO_Port GPIOB
+#define Right_EXTI_IRQn EXTI2_IRQn
+#define Front_Pin GPIO_PIN_11
+#define Front_GPIO_Port GPIOB
+#define Front_EXTI_IRQn EXTI15_10_IRQn
 #define LED2_Pin GPIO_PIN_12
 #define LED2_GPIO_Port GPIOB
 #define LED1_Pin GPIO_PIN_13

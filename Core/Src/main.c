@@ -105,7 +105,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
   OLED_Init();
   OLED_ShowInit();
-  USART1_Init();
+//  USART1_Init();
   Motor_Init();
   HC_SR04_Init();
   BEEP_Moment();
@@ -115,6 +115,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+    MyPrintf("hhhh");
     GetSpeed();
     ValuesShow();
     /* USER CODE END WHILE */

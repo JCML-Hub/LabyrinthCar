@@ -6,6 +6,9 @@
 #define LABYRINTHCAR_CONTROL_H
 #include "main.h"
 
+#define TRUE  1
+#define FALSE 0
+
 typedef struct{
     float Distance_L;
     float Distance_R;
@@ -13,6 +16,10 @@ typedef struct{
 }_Values;
 typedef struct {
     uint8_t OledShow_Flag;
+    _Bool Front_Detected;
+    _Bool Left_Detected;
+    _Bool Right_Detected;
+    _Bool Back_Detected;
 }_Flags;
 
 extern _Flags flags;
