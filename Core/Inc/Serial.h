@@ -15,6 +15,11 @@
 extern DMA_HandleTypeDef hdma_usart1_rx;
 extern DMA_HandleTypeDef hdma_usart1_tx;
 
+
+#ifdef ENABLEUART2
+extern DMA_HandleTypeDef hdma_usart2_rx;
+extern DMA_HandleTypeDef hdma_usart2_tx;
+#endif
 extern uint8_t *RxData;
 extern uint8_t *p_IsToReceive;
 extern uint8_t WhichBufIsReady;
@@ -22,8 +27,10 @@ extern char RxDataStr[MAX_RX_LEN];
 
 
 void USART1_Init(void);
+void USART2_Init(void);
 void MyPrintf(const char *__format, ...);
 _Bool GetRxFlag(void);
 void StringTrans(void);
 float GetRxValue(char *Str, uint8_t lenth);
+void USART1_RX_CallBack(void);
 #endif

@@ -61,6 +61,6 @@ void LED_TogglePin(uint8_t Which)
 }
 void BEEP_Moment(void){
   HAL_GPIO_WritePin(BEEP_GPIO_Port,BEEP_Pin,GPIO_PIN_SET);
-  Delay_ms(72);
+  Delay_ms(40);
   HAL_GPIO_WritePin(BEEP_GPIO_Port,BEEP_Pin,GPIO_PIN_RESET);
 }

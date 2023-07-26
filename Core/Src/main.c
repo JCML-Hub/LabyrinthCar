@@ -32,6 +32,8 @@
 #include "Motor.h"
 #include "HCSR04.h"
 #include "Control.h"
+#include "mpu6050.h"
+#include "inv_mpu.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -102,10 +104,14 @@ int main(void)
   MX_TIM6_Init();
   MX_TIM7_Init();
   MX_TIM2_Init();
+  MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
+//  HAL_TIM_Base_Start_IT(&Encoder_TimeCounter);//开启用于获取计数的定时器
+  mpu_init();
+  mpu_dmp_init();
   OLED_Init();
   OLED_ShowInit();
-//  USART1_Init();
+  USART1_Init();
   Motor_Init();
   HC_SR04_Init();
   BEEP_Moment();
@@ -115,8 +121,11 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    MyPrintf("hhhh");
+//    MPUData_Updata();
     GetSpeed();
+    MyPrintf("%f\r\n",values.yaw);
+    Control_A((int )values.TargetSpeed_L);//将速度赋值
+    Control_B((int )values.TargetSpeed_R);
     ValuesShow();
     /* USER CODE END WHILE */
 

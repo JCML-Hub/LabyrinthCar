@@ -34,7 +34,8 @@ add_compile_options(-ffunction-sections -fdata-sections -fno-common -fmessage-le
 
 # Enable assembler files preprocessing
 add_compile_options($<$<COMPILE_LANGUAGE:ASM>:-x$<SEMICOLON>assembler-with-cpp>)
-
+include_directories(Core/Inc Drivers/STM32F1xx_HAL_Driver/Inc Drivers/STM32F1xx_HAL_Driver/Inc/Legacy
+        Drivers/CMSIS/Device/ST/STM32F1xx/Include Drivers/CMSIS/Include Drivers/mpu6050)
 if ("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
     message(STATUS "Maximum optimization for speed")
     add_compile_options(-Ofast)
