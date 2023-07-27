@@ -22,9 +22,10 @@
 
 float data1[10],data2[10];
 
-uint64_t time=0;			//ÉùÃ÷±äÁ¿£¬ÓÃÀ´¼ÆÊ±
+uint64_t time_CH1=0;			//ÉùÃ÷±äÁ¿£¬ÓÃÀ´¼ÆÊ±
+uint64_t time_CH2=0;			//ÉùÃ÷±äÁ¿£¬ÓÃÀ´¼ÆÊ±
 uint64_t time_end=0;		//ÉùÃ÷±äÁ¿£¬´æ´¢»Ø²¨ĞÅºÅÊ±¼ä
-uint32_t Distance;
+
 
 /***********************************************************
 *@Ãû³Æ 	:HC_SR04_Init
@@ -32,7 +33,7 @@ uint32_t Distance;
 *@²ÎÊı	:ÎŞ
 *@·µ»ØÖµ	:ÎŞ
 *@×÷Õß	:JCML
-*@ÈÕÆÚ	:2023-02-10
+*@ÈÕÆÚ	:2023-07-27
 ***********************************************************/
 
 void HC_SR04_Init(void)//´Ë´¦ÒÑ¾­°üº¬Á½¸öÍ¨µÀµÄ¿ªÆô
@@ -43,45 +44,58 @@ void HC_SR04_Init(void)//´Ë´¦ÒÑ¾­°üº¬Á½¸öÍ¨µÀµÄ¿ªÆô
   HAL_GPIO_WritePin(TrigCH2_GPIO_Port,TrigCH1_Pin,GPIO_PIN_RESET);						//Êä³öµÍµçÆ½
   Delay_us(15);											//ÑÓÊ±15Î¢Ãë
 }
-
+/***********************************************************
+*@Ãû³Æ 	:HC_SR04_CounterCallBack
+*@ÃèÊö	:¶¨Ê±Æ÷¼ÆÊı»Øµ÷º¯Êı
+*@²ÎÊı	:ÎŞ
+*@·µ»ØÖµ	:ÎŞ
+*@×÷Õß	:JCML
+*@ÈÕÆÚ	:2023-07-27
+***********************************************************/
+void HC_SR04_CounterCallBack(void){
+  time_CH1++;
+  time_CH2++;
+}
 /***********************************************************
 *@Ãû³Æ 	:GetDistance
 *@ÃèÊö	:»ñÈ¡¾àÀë
 *@²ÎÊı	:ÎŞ
 *@·µ»ØÖµ	:Distance³õÊ¼Öµ
 *@×÷Õß	:JCML
-*@ÈÕÆÚ	:2023-02-10
+*@ÈÕÆÚ	:2023-07-27
 ***********************************************************/
 
-int16_t GetDistance_CH1(void)									//²â¾à²¢·µ»Øµ¥Î»ÎªºÁÃ×µÄ¾àÀë½á¹û
+float GetDistance_CH1(void)									//²â¾à²¢·µ»Øµ¥Î»ÎªºÁÃ×µÄ¾àÀë½á¹û
 {
+  float Distance=0;
   HAL_GPIO_WritePin(TrigCH1_GPIO_Port,TrigCH1_Pin,GPIO_PIN_SET);//Êä³ö¸ßµçÆ½
   Delay_us(15);										//ÑÓÊ±15Î¢Ãë
   HAL_GPIO_WritePin(TrigCH1_GPIO_Port,TrigCH1_Pin,GPIO_PIN_RESET);//Êä³öµÍµçÆ½
   while (HAL_GPIO_ReadPin(EchoCH1_GPIO_Port, EchoCH1_Pin) == 0);//µÈ´ıµÍµçÆ½½áÊø£¬×ªÎª¸ßµçÆ½¿ªÊ¼¼ÆÊ±
-  time=0;												//¼ÆÊ±ÇåÁã
+  time_CH1=0;												//¼ÆÊ±ÇåÁã
   while(HAL_GPIO_ReadPin(EchoCH1_GPIO_Port, EchoCH1_Pin) == 1);		//µÈ´ı¸ßµçÆ½½áÊø£¬×ªÎªµÍµçÆ½½áÊø¼ÆÊ±
-  time_end=time;										//¼ÇÂ¼½áÊøÊ±µÄÊ±¼ä
+  time_end=time_CH1;										//¼ÇÂ¼½áÊøÊ±µÄÊ±¼ä
   if(time_end/100<38)									//ÅĞ¶ÏÊÇ·ñĞ¡ÓÚ38ºÁÃë£¬´óÓÚ38ºÁÃëµÄ¾ÍÊÇ³¬Ê±£¬Ö±½Óµ÷µ½ÏÂÃæ·µ»Ø0
   {
-    Distance=(time_end*346)/2;						//¼ÆËã¾àÀë£¬25¡ãC¿ÕÆøÖĞµÄÒôËÙÎª346m/s
+    Distance=((float )time_end*346)/2.0f;						//¼ÆËã¾àÀë£¬25¡ãC¿ÕÆøÖĞµÄÒôËÙÎª346m/s
   }
   return Distance;									//·µ»Ø²â¾à½á¹û
 }
 
 
-int16_t GetDistance_CH2(void)									//²â¾à²¢·µ»Øµ¥Î»ÎªºÁÃ×µÄ¾àÀë½á¹û
+float GetDistance_CH2(void)									//²â¾à²¢·µ»Øµ¥Î»ÎªºÁÃ×µÄ¾àÀë½á¹û
 {
+  float Distance=0;
   HAL_GPIO_WritePin(TrigCH2_GPIO_Port,TrigCH2_Pin,GPIO_PIN_SET);//Êä³ö¸ßµçÆ½
   Delay_us(15);										//ÑÓÊ±15Î¢Ãë
   HAL_GPIO_WritePin(TrigCH2_GPIO_Port,TrigCH2_Pin,GPIO_PIN_RESET);//Êä³öµÍµçÆ½
   while (HAL_GPIO_ReadPin(EchoCH2_GPIO_Port, EchoCH2_Pin) == 0);//µÈ´ıµÍµçÆ½½áÊø£¬×ªÎª¸ßµçÆ½¿ªÊ¼¼ÆÊ±
-  time=0;												//¼ÆÊ±ÇåÁã
+  time_CH2=0;												//¼ÆÊ±ÇåÁã
   while(HAL_GPIO_ReadPin(EchoCH2_GPIO_Port, EchoCH2_Pin) == 1);		//µÈ´ı¸ßµçÆ½½áÊø£¬×ªÎªµÍµçÆ½½áÊø¼ÆÊ±
-  time_end=time;										//¼ÇÂ¼½áÊøÊ±µÄÊ±¼ä
+  time_end=time_CH2;										//¼ÇÂ¼½áÊøÊ±µÄÊ±¼ä
   if(time_end/100<38)									//ÅĞ¶ÏÊÇ·ñĞ¡ÓÚ38ºÁÃë£¬´óÓÚ38ºÁÃëµÄ¾ÍÊÇ³¬Ê±£¬Ö±½Óµ÷µ½ÏÂÃæ·µ»Ø0
   {
-    Distance=(time_end*346)/2;						//¼ÆËã¾àÀë£¬25¡ãC¿ÕÆøÖĞµÄÒôËÙÎª346m/s
+    Distance=((float )time_end*346)/2.0f;						//¼ÆËã¾àÀë£¬25¡ãC¿ÕÆøÖĞµÄÒôËÙÎª346m/s
   }
   return Distance;									//·µ»Ø²â¾à½á¹û
 }
@@ -91,7 +105,7 @@ int16_t GetDistance_CH2(void)									//²â¾à²¢·µ»Øµ¥Î»ÎªºÁÃ×µÄ¾àÀë½á¹û
 *@²ÎÊı	:ÎŞ
 *@·µ»ØÖµ	:ÎŞ
 *@×÷Õß	:JCML
-*@ÈÕÆÚ	:2023-02-10
+*@ÈÕÆÚ	:2023-07-27
 ***********************************************************/
 float averageFilterCH1(float in_data)
 {
@@ -138,7 +152,7 @@ float ScanDistance_mm(uint8_t Which)//·µ»Øµ¥Î»ÎªºÁÃ×µÄ¾àÀë½á¹û,¼ÓÉÏÒ»¸ö¼òµ¥µÄ¾ùÖ
 *@²ÎÊı	:ÎŞ
 *@·µ»ØÖµ	:ÎŞ
 *@×÷Õß	:JCML
-*@ÈÕÆÚ	:2023-02-10
+*@ÈÕÆÚ	:2023-07-27
 ***********************************************************/
 
 //void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)			//¸üĞÂÖĞ¶Ïº¯Êı£¬ÓÃÀ´¼ÆÊ±£¬Ã¿10Î¢Ãë±äÁ¿time¼Ó1
