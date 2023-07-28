@@ -11,9 +11,14 @@
 #define FALSE 0
 #define CleanFlag 0
 
-#define CarSpeed  50    //小车前进速度
+#define CarSpeed  0    //小车前进速度
 #define StraightValue_Weight  0.5   //MPU6050和测距模块的影响权重
-#define TurnFault_Allow  10.0   //转向容错
+#define TurnFault_Allow  5.0   //转向容错
+
+#define turnKp  -0.5f
+#define turnKi  0.0f
+#define turnKd  0.0f
+
 
 typedef struct{
     float Distance_L;
@@ -51,4 +56,8 @@ extern _PID pid_Turn;
 void OLED_ShowInit(void);
 void ValuesShow(void);
 void MPUData_Updata(void);
+void GetRX_Order(void);
+
+void State_Update(void);//小车的状态更新
+
 #endif //LABYRINTHCAR_CONTROL_H

@@ -238,13 +238,12 @@ void USART_RX_CallBack(UART_HandleTypeDef *huart)
   }
   HAL_UART_Receive_DMA(&ENABLEUARTA, p_IsToReceive, MAX_RX_LEN); //数据处理完毕，重新启动接收
 
-
 #ifdef ENABLEUARTB
   if (RESET != __HAL_UART_GET_FLAG(&ENABLEUARTB, UART_FLAG_IDLE))
   {
     Rxflag_Ch2 = 1;
     HAL_UART_DMAStop(&ENABLEUARTB); // 把DMA接收停掉，防止速度过快导致中断重入，数据被覆写。
-    data_length_Ch2 = MAX_RX_LEN - __HAL_DMA_GET_COUNTER(&UART_DMA_CH1_Rx);
+    data_length_Ch2 = MAX_RX_LEN - __HAL_DMA_GET_COUNTER(&UART_DMA_CH2_Rx);
     // 数据总长度=极限接收长度-DMA剩余的接收长度
     if (WhichBufIsReady_CH2)	//WhichBufIsReady=1
     {
@@ -265,4 +264,51 @@ void USART_RX_CallBack(UART_HandleTypeDef *huart)
   HAL_UART_Receive_DMA(&ENABLEUARTB, p_IsToReceive_CH2, MAX_RX_LEN); //数据处理完毕，重新启动接收
 #endif
 }
+/*/串口GetRxValue使用示例
+ void GetValue(_Values *Value, _PID *pid)
+{/
+	if (strstr(RxDataStr, "SetSpeed")!=NULL)
+	{//设定目标速度值
+		Value->Target_Speed = GetRxValue((char *)RxDataStr, 15);
+		Myprintf("Speed Seted:%.2f\r\n",Value->Target_Speed);
+	}
+
+	else if (strstr(RxDataStr, "SetKp")!=NULL)
+	{//设定Kp值
+		pid->Kp = GetRxValue((char *)RxDataStr, 15);
+		Myprintf("Kp Seted:% 2f\r\n", pid->Kp);
+	}
+
+	else if (strstr(RxDataStr, "SetKi")!=NULL)
+	{//设定Ki值
+		 pid->Ki = GetRxValue((char *)RxDataStr, 15);
+		Myprintf("Ki Seted:% 2f\r\n", pid->Ki);
+	}
+
+	else if (strstr(RxDataStr, "SetKd")!=NULL)
+	{//设定Kd值
+		 pid->Kp = GetRxValue((char *)RxDataStr, 15);
+		Myprintf("Kd Seted:% 2f\r\n", pid->Kp);
+	}
+
+	else if (strstr(RxDataStr, "help")!=NULL)
+	{//获取参数调整帮助
+		Myprintf("调整速度：Speed;\r\n调整PID值分别为：Kp, Ki, Kd\r\n");
+	}
+
+	else if (strstr(RxDataStr, "Value")!=NULL)
+	{//获取当前设定的参数值
+		Myprintf("调整速度:%0f;\r\nKp:%f\r\nKi:%f\r\nKd:%f\r\n", Value->Target_Speed,
+																		 pid->Kp,  pid->Ki,  pid->Kd);
+	}
+	else if (strstr(RxDataStr, "data")!=NULL)
+	{//获取当前接收到的电磁杆和编码器的数据
+
+	}
+	else
+	{
+		Myprintf("Error Command!");
+	}
+}
+ */
 

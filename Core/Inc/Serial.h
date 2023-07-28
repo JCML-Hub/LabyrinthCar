@@ -13,7 +13,7 @@
 
 /*使能串口，同时定义其接口*/
 #define ENABLEUARTA huart1
-//#define ENABLEUARTB huart2
+#define ENABLEUARTB huart2
 
 #ifdef ENABLEUARTA
 extern char RxDataStr[MAX_RX_LEN];
@@ -21,17 +21,18 @@ extern char RxDataStr[MAX_RX_LEN];
 extern DMA_HandleTypeDef hdma_usart1_rx;
 extern DMA_HandleTypeDef hdma_usart1_tx;
 #define UART_DMA_CH1_Rx hdma_usart1_rx
-#define UART_DMA_CH1_Tx hdma_usart1_rx
+#define UART_DMA_CH1_Tx hdma_usart1_tx
 
 #endif
 
 #ifdef ENABLEUARTB
-char RxDataStr_Ch2[MAX_RX_LEN];
+extern char RxDataStr_Ch2[MAX_RX_LEN];
 
 extern DMA_HandleTypeDef hdma_usart2_rx;
 extern DMA_HandleTypeDef hdma_usart2_tx;
 #define UART_DMA_CH2_Rx hdma_usart2_rx
-#define UART_DMA_CH2_Tx hdma_usart2_rx
+#define UART_DMA_CH2_Tx hdma_usart2_tx
+
 #endif
 
 void USART_Init(UART_HandleTypeDef *huart);

@@ -1,7 +1,5 @@
 /**
   ************************************* Copyright ******************************
-  *
-
   *                 (C) Copyright 2023,--,China, CUIT.
   *                            All Rights Reserved
   *                     By(JCML)

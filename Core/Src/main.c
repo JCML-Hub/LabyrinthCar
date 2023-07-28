@@ -106,15 +106,19 @@ int main(void)
   MX_TIM2_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-//  HAL_TIM_Base_Start_IT(&Encoder_TimeCounter);//开启用于获取计数的定时器
-  mpu_init();
+//  mpu_init();
   mpu_dmp_init();
   OLED_Init();
   OLED_ShowInit();
-  USART1_Init();
+  USART_Init(&huart1);
   Motor_Init();
   HC_SR04_Init();
   BEEP_Moment();
+  pid_Turn.Kp=turnKp;
+  pid_Turn.Ki=turnKi;
+  pid_Turn.Kd=turnKd;
+  PID_init(&pid_Straight);
+  PID_init(&pid_Turn);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -123,7 +127,10 @@ int main(void)
   {
 //    MPUData_Updata();
     GetSpeed();
-    MyPrintf("%f\r\n",values.yaw);
+    if (GetRxFlag(&huart1)==1){
+      GetRX_Order();
+    }
+    State_Update();
     Control_A((int )values.TargetSpeed_L);//将速度赋值
     Control_B((int )values.TargetSpeed_R);
     ValuesShow();
